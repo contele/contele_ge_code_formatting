@@ -1,0 +1,24 @@
+{
+  "name": "contele_ge_code_formatting",
+  "version": "1.0.0",
+  "description": "Lib criada com objetivo de manter centralizadas as configurações de formatação de código usados em todos os projetos relacionados ao Contele Gestão de Equipes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["formatting", "eslint", "prettier"],
+  "author": "Contele",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seu-usuario/seu-repositorio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/seu-usuario/seu-repositorio/issues"
+  },
+  "files": [
+    "eslintignore",
+    "eslintrc.js",
+    "prettierrc.json"
+  ]
+}
