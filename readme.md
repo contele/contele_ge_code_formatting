@@ -22,9 +22,13 @@ Para utilizar estas configurações em seu projeto, siga os passos abaixo:
 Adicione a biblioteca como uma dependência de desenvolvimento em seu projeto:
 
 ```bash
-npm install @contele/config-formatacao --save-dev
+npm install eslint-config-contelege --save-dev
+
 # ou
-yarn add @contele/config-formatacao --dev
+pnpm add eslint-config-contelege --dev
+
+# ou
+yarn add eslint-config-contelege --dev
 ```
 
 
@@ -34,8 +38,9 @@ No arquivo .eslintrc.js do seu projeto, estenda as configurações da biblioteca
 
 ```bash
 module.exports = {
-  extends: ['contelege-code-formatting/eslintrc']
+  extends: ['eslint-config-contelege/eslintrc'],
 };
+
 ```
 
 
@@ -44,7 +49,7 @@ module.exports = {
 No arquivo .prettierrc.js do seu projeto, importe as configurações da biblioteca:
 
 ```bash
-module.exports = require('contelege-code-formatting/prettierrc');
+module.exports = require('eslint-config-contelege/prettierrc')
 ```
 
 ### Contribuições

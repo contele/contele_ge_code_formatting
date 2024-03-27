@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['universe/node', 'universe/web,universe/native'],
+  extends: ['universe/node', 'universe/web', 'universe/native'],
   globals: {
     __dirname: true,
   },

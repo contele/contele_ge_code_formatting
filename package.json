@@ -1,10 +1,11 @@
 {
-  "name": "contelege-code-formatting",
-  "version": "1.0.7",
+  "name": "eslint-config-contelege",
+  "version": "1.0.12",
   "description": "Lib criada com objetivo de manter centralizadas as configurações de formatação de código usados em todos os projetos relacionados ao Contele Gestão de Equipes",
-  "main": "index.js",
+  "main": "eslintrc.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "precommit": "eslint ."
   },
   "keywords": [
     "formatting",
@@ -15,10 +16,10 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/seu-usuario/seu-repositorio.git"
+    "url": "https://github.com/contele/contele_ge_code_formatting.git"
   },
   "bugs": {
-    "url": "https://github.com/seu-usuario/seu-repositorio/issues"
+    "url": "https://github.com/contele/contele_ge_code_formatting/issues"
   },
   "files": [
     "eslintignore",
@@ -28,6 +29,8 @@
   "devDependencies": {
     "eslint": "^8.57.0",
     "eslint-config-universe": "^12.0.0",
+    "husky": "^9.0.11",
+    "lerna": "^8.1.2",
     "prettier": "^3.2.5"
   }
 }
