@@ -34,10 +34,7 @@ No arquivo .eslintrc.js do seu projeto, estenda as configurações da biblioteca
 
 ```bash
 module.exports = {
-  extends: ["@contele/config-formatacao/eslint"],
-  rules: {
-    // Suas regras personalizadas aqui
-  },
+  extends: ['contelege-code-formatting/eslintrc']
 };
 ```
 
@@ -47,12 +44,7 @@ module.exports = {
 No arquivo .prettierrc.js do seu projeto, importe as configurações da biblioteca:
 
 ```bash
-const config = require('@contele/config-formatacao/prettier');
-
-module.exports = {
-  ...config,
-  // Suas regras personalizadas aqui
-};
+module.exports = require('contelege-code-formatting/prettierrc');
 ```
 
 ### Contribuições

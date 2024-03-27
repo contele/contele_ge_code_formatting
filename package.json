@@ -1,6 +1,6 @@
 {
   "name": "contelege-code-formatting",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "description": "Lib criada com objetivo de manter centralizadas as configurações de formatação de código usados em todos os projetos relacionados ao Contele Gestão de Equipes",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,8 @@
     "prettierrc.js"
   ],
   "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-universe": "^12.0.0",
     "prettier": "^3.2.5"
   }
 }
