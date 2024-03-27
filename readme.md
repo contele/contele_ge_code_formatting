@@ -28,6 +28,20 @@ yarn add @contele/config-formatacao --dev
 ```
 
 
+### Configuração do ESLint
+
+No arquivo .eslintrc.js do seu projeto, estenda as configurações da biblioteca:
+
+```bash
+module.exports = {
+  extends: ["@contele/config-formatacao/eslint"],
+  rules: {
+    // Suas regras personalizadas aqui
+  },
+};
+```
+
+
 ### Configuração do Prettier
 
 No arquivo .prettierrc.js do seu projeto, importe as configurações da biblioteca:
