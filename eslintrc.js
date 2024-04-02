@@ -9,11 +9,6 @@ module.exports = {
     'react/prop-types': 'off',
     'import/no-unused-modules': 'error',
     'unused-imports/no-unused-imports': 'error',
-    'max-lines': [
-      'warn',
-      { max: 120, skipBlankLines: true, skipComments: true },
-    ],
-
     // allow .js files to contain JSX code
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
 
