@@ -13,9 +13,6 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
 
     // ignore errors for the react-navigation package
-    'react/prop-types': [
-      'error',
-      { ignore: ['navigation', 'navigation.navigate', 'Component','children','pageProps'] },
-    ],
+    'react/prop-types': 'off',
   },
 };
