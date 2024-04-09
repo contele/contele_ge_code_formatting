@@ -12,7 +12,5 @@ module.exports = {
     // allow .js files to contain JSX code
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
 
-    // ignore errors for the react-navigation package
-    'react/prop-types': 'off',
   },
 };
