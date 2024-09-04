@@ -49,7 +49,7 @@ yarn add eslint-config-contelege --dev
 ### teste manual
 
 ```node
-jscodeshift -t ./node_modules/eslint-config-contelege/reorganize-hooks.js "./src/app/(tabs)/places/index.jsx"
+jscodeshift -t ./node_modules/eslint-config-contelege/reorganize-hooks.js "./src/....."
 ```
 
 ### Configuração do ESLint
