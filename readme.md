@@ -35,6 +35,20 @@ yarn add eslint-config-contelege --dev
 ### ir para settings.json do vscode e adicionar a linha.
 
 ```json
+"editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.format.enable": true,
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+},
 "emeraldwalk.runonsave": {
     "commands": [
       {
