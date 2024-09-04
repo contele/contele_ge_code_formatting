@@ -40,16 +40,16 @@ yarn add eslint-config-contelege --dev
       {
         "match": "\\.(js|jsx)$",
         "isAsync": true,
-        "cmd": "echo 'Running jscodeshift on ${file}' && jscodeshift -t ./reorganize-hooks.js '${file}'"
+        "cmd": "echo 'Running jscodeshift on ${file}' && jscodeshift -t ./node_modules/eslint-config-contelege/reorganize-hooks.js '${file}'"
       }
     ]
- }
+  }
 ```
 
 ### teste manual
 
 ```node
-jscodeshift -t ./reorganize-hooks.js "./src/app/(tabs)/places/index.jsx"
+jscodeshift -t ./node_modules/eslint-config-contelege/reorganize-hooks.js "./src/app/(tabs)/places/index.jsx"
 ```
 
 ### Configuração do ESLint
