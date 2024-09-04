@@ -25,12 +25,32 @@ Adicione a biblioteca como uma dependência de desenvolvimento em seu projeto:
 npm install eslint-config-contelege --save-dev
 
 # ou
-pnpm add eslint-config-contelege --dev
-
-# ou
 yarn add eslint-config-contelege --dev
 ```
 
+### Instalar o plugin no vscode
+
+![alt text](image.png)
+
+### ir para settings.json do vscode e adicionar a linha.
+
+```json
+"emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "\\.(js|jsx)$",
+        "isAsync": true,
+        "cmd": "echo 'Running jscodeshift on ${file}' && jscodeshift -t ./reorganize-hooks.js '${file}'"
+      }
+    ]
+ }
+```
+
+### teste manual
+
+```node
+jscodeshift -t ./reorganize-hooks.js "./src/app/(tabs)/places/index.jsx"
+```
 
 ### Configuração do ESLint
 
@@ -42,7 +62,6 @@ module.exports = {
 };
 
 ```
-
 
 ### Configuração do Prettier
 
@@ -61,7 +80,6 @@ Crie uma nova branch para a sua contribuição.
 Faça suas alterações.
 Envie um pull request para o repositório original.
 Todas as contribuições serão revisadas antes da aceitação. Certifique-se de seguir as diretrizes de codificação estabelecidas.
-
 
 ### Licença
 

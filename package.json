@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-contelege",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "description": "Lib criada com objetivo de manter centralizadas as configurações de formatação de código usados em todos os projetos relacionados ao Contele Gestão de Equipes",
   "main": "eslintrc.js",
   "scripts": {
@@ -32,6 +32,7 @@
     "eslint-config-universe": "^12.0.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-unused-imports": "^3.1.0",
+    "jscodeshift": "^17.0.0",
     "prettier": "^3.2.5"
   }
 }
