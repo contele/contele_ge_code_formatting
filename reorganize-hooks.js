@@ -1,77 +1,138 @@
 module.exports = function (fileInfo, api) {
-  const j = api.jscodeshift
-  const root = j(fileInfo.source)
+  const j = api.jscodeshift;
+  const root = j(fileInfo.source);
 
-  // Ordem personalizada dos hooks: useSelector, useState, useRef
-  const hookPriorities = {
-    useSelector: 0,
-    useState: 1,
-    useRef: 2,
+  // Defina o conjunto de nomes de hooks que você deseja reorganizar
+  const hookNames = new Set([
+    "useSelector",
+    "useDispatch",
+    "useLocale",
+    "useState",
+    "useRef",
+    // Adicione outros hooks se necessário
+  ]);
+
+  function isHookCall(expression) {
+    return (
+      expression && expression.callee && hookNames.has(expression.callee.name)
+    );
   }
 
-  // Função para verificar se o identificador é um hook
-  function isHook(identifier) {
-    return hookPriorities.hasOwnProperty(identifier.name)
+  function getDeclaredVariables(statement) {
+    const declared = new Set();
+    if (j.VariableDeclaration.check(statement)) {
+      statement.declarations.forEach((declarator) => {
+        const id = declarator.id;
+        if (j.Identifier.check(id)) {
+          declared.add(id.name);
+        } else if (j.ArrayPattern.check(id)) {
+          id.elements.forEach((elem) => {
+            if (elem && elem.name) {
+              declared.add(elem.name);
+            }
+          });
+        } else if (j.ObjectPattern.check(id)) {
+          id.properties.forEach((prop) => {
+            if (prop.value && prop.value.name) {
+              declared.add(prop.value.name);
+            }
+          });
+        }
+      });
+    }
+    return declared;
   }
 
-  // Função para reorganizar os hooks dentro do corpo da função do componente
+  function getUsedVariables(init) {
+    const used = new Set();
+    j(init)
+      .find(j.Identifier)
+      .filter((path) => path.node !== init.callee)
+      .forEach((path) => {
+        used.add(path.node.name);
+      });
+    return used;
+  }
+
   function organizeHooksInComponentFunction(path) {
-    const body = path.node.body.body
-    const hookGroups = {
-      useSelector: [],
-      useState: [],
-      useRef: [],
-      other: [],
+    const bodyStatements = path.node.body.body;
+    const declaredVariables = new Set();
+    const statementsWithIndex = bodyStatements.map((stmt, index) => ({
+      stmt,
+      index,
+    }));
+
+    const hooks = [];
+    const others = [];
+
+    for (let i = 0; i < statementsWithIndex.length; i++) {
+      const { stmt, index } = statementsWithIndex[i];
+      if (
+        j.VariableDeclaration.check(stmt) &&
+        stmt.declarations.some((declarator) => isHookCall(declarator.init))
+      ) {
+        // Verificar se o hook depende apenas de variáveis já declaradas
+        const hookDeclarators = stmt.declarations.filter((declarator) =>
+          isHookCall(declarator.init)
+        );
+        let canMove = true;
+        for (const declarator of hookDeclarators) {
+          const usedVars = getUsedVariables(declarator.init);
+          for (const usedVar of usedVars) {
+            if (!declaredVariables.has(usedVar)) {
+              // Variável usada ainda não foi declarada, não pode mover
+              canMove = false;
+              break;
+            }
+          }
+          if (!canMove) {
+            break;
+          }
+        }
+        if (canMove) {
+          hooks.push({ stmt, index });
+        } else {
+          others.push({ stmt, index });
+        }
+        // Adicionar variáveis declaradas
+        const vars = getDeclaredVariables(stmt);
+        vars.forEach((v) => declaredVariables.add(v));
+      } else {
+        others.push({ stmt, index });
+        // Adicionar variáveis declaradas
+        const vars = getDeclaredVariables(stmt);
+        vars.forEach((v) => declaredVariables.add(v));
+      }
     }
 
-    // Separar hooks por tipo (useSelector, useState, useRef) e outros statements
-    body.forEach((statement) => {
-      if (j.VariableDeclaration.check(statement)) {
-        const hookName = statement.declarations[0]?.init?.callee?.name
-        if (hookName && isHook(statement.declarations[0].init.callee)) {
-          hookGroups[hookName].push(statement)
-        } else {
-          hookGroups.other.push(statement)
-        }
-      } else {
-        hookGroups.other.push(statement)
-      }
-    })
-
-    // Reorganizar os hooks e adicionar espaços entre os grupos (usando comentários ou agrupamentos)
-    const organizedHooks = [
-      ...hookGroups.useSelector,
-      ...(hookGroups.useSelector.length && hookGroups.useState.length
-        ? [j.emptyStatement()]
-        : []),
-      ...hookGroups.useState,
-      ...(hookGroups.useState.length && hookGroups.useRef.length
-        ? [j.emptyStatement()]
-        : []),
-      ...hookGroups.useRef,
-    ]
-
-    // Atualizar o corpo da função com hooks reorganizados seguidos pelos outros statements
-    path.node.body.body = [...organizedHooks, ...hookGroups.other]
+    // Reconstruir o corpo da função
+    const sortedHooks = hooks
+      .sort((a, b) => a.index - b.index)
+      .map((item) => item.stmt);
+    const sortedOthers = others
+      .sort((a, b) => a.index - b.index)
+      .map((item) => item.stmt);
+    path.node.body.body = [...sortedHooks, ...sortedOthers];
   }
 
-  // Função principal para encontrar componentes e organizar os hooks dentro de cada componente
   function transform() {
-    root
-      .find(j.FunctionDeclaration) // Encontra todas as funções declaradas
-      .forEach((path) => {
-        organizeHooksInComponentFunction(path) // Reorganiza os hooks dentro da função do componente
-      })
+    root.find(j.FunctionDeclaration).forEach((path) => {
+      organizeHooksInComponentFunction(path);
+    });
 
     root
-      .find(j.ArrowFunctionExpression) // Encontra todas as funções arrow
-      .filter((path) => j.VariableDeclarator.check(path.parent.node)) // Certifica-se de que é uma função arrow em um componente
+      .find(j.VariableDeclarator)
+      .filter(
+        (path) =>
+          j.FunctionExpression.check(path.node.init) ||
+          j.ArrowFunctionExpression.check(path.node.init)
+      )
       .forEach((path) => {
-        organizeHooksInComponentFunction(path) // Reorganiza os hooks dentro da função do componente
-      })
+        organizeHooksInComponentFunction(path.get("init"));
+      });
   }
 
-  transform()
+  transform();
 
-  return root.toSource()
-}
+  return root.toSource();
+};
